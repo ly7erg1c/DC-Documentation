@@ -1,5 +1,15 @@
+# Ignore the mdbook binary
 bin/mdbook
+
+# Ignore the output book directories
 book/
 book-test/
+
+# Ignore generated EPUB files
 *.epub
+
+# Ignore macOS system files
 .DS_Store
+
+# Ignore VS Code settings
+.vscode/
