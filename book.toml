@@ -8,7 +8,7 @@ language = "en"
 git-repository-url = "https://github.com/ly7erg1c/DC-Documentation"
 edit-url-template = "https://github.com/ly7erg1c/DC-Documentation/edit/main/{path}"
 site-url = "/DC-Documentation/"
-cname = "docs.distributed-chaos.org"
+cname = "distributed.wiki"
 default-theme = "light"
 preferred-dark-theme = "navy"
 
