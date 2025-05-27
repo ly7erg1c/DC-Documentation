@@ -1,1 +1,5 @@
 bin/mdbook
+book/
+book-test/
+*.epub
+.DS_Store

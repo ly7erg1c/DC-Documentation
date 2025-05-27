@@ -1,0 +1,24 @@
+[book]
+name = "Distributed Chaos Documentation"
+authors = ["Distributed Chaos Community"]
+description = "Official documentation for the Distributed Chaos community"
+language = "en"
+
+[output.html]
+git-repository-url = "https://github.com/ly7erg1c/DC-Documentation"
+edit-url-template = "https://github.com/ly7erg1c/DC-Documentation/edit/main/{path}"
+site-url = "/DC-Documentation/"
+cname = "docs.distributed-chaos.org"
+default-theme = "light"
+preferred-dark-theme = "navy"
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3 
