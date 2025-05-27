@@ -1,4 +1,4 @@
-# https://ly7erg1c.github.io/DC-Documentation/
+# https://distributed.wiki
 # Distributed Chaos Documentation
 
 Welcome to the official documentation for Distributed Chaos! This repository contains comprehensive documentation for running and participating in Distributed Chaos groups.
