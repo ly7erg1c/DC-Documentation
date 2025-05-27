@@ -13,7 +13,6 @@
 
 # Running Groups
 - [Meeting Formats](./running-groups/meeting-formats.md)
-- [Venue Guidelines](./running-groups/venue-guidelines.md)
 
 # Community Resources
 - [Communication Channels](./community/communication.md)
