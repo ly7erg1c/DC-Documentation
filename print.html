@@ -1,0 +1,996 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Official documentation for the Distributed Chaos community">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Getting Started</li><li class="chapter-item expanded "><a href="getting-started/what-is-dc.html"><strong aria-hidden="true">1.</strong> What is Distributed Chaos?</a></li><li class="chapter-item expanded "><a href="getting-started/starting-a-group.html"><strong aria-hidden="true">2.</strong> Starting a Group</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework Guidelines</li><li class="chapter-item expanded "><a href="framework/overview.html"><strong aria-hidden="true">3.</strong> Overview</a></li><li class="chapter-item expanded "><a href="framework/principles.html"><strong aria-hidden="true">4.</strong> Core Principles</a></li><li class="chapter-item expanded "><a href="framework/structure.html"><strong aria-hidden="true">5.</strong> Group Structure</a></li><li class="chapter-item expanded affix "><li class="part-title">Running Groups</li><li class="chapter-item expanded "><a href="running-groups/meeting-formats.html"><strong aria-hidden="true">6.</strong> Meeting Formats</a></li><li class="chapter-item expanded affix "><li class="part-title">Community Resources</li><li class="chapter-item expanded "><a href="community/communication.html"><strong aria-hidden="true">7.</strong> Communication Channels</a></li><li class="chapter-item expanded "><a href="community/sponsorship.html"><strong aria-hidden="true">8.</strong> Sponsorship</a></li><li class="chapter-item expanded "><a href="community/tools.html"><strong aria-hidden="true">9.</strong> Tools and Templates</a></li><li class="chapter-item expanded affix "><li class="part-title">Contributing</li><li class="chapter-item expanded "><a href="contributing/how-to.html"><strong aria-hidden="true">10.</strong> How to Contribute</a></li><li class="chapter-item expanded "><a href="contributing/style-guide.html"><strong aria-hidden="true">11.</strong> Documentation Style Guide</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ly7erg1c/DC-Documentation" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Need to replace this with a main page -->
+<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<ul>
+<li><a href="./getting-started/what-is-dc.html">What is Distributed Chaos?</a></li>
+<li><a href="./getting-started/starting-a-group.html">Starting a Group</a></li>
+</ul>
+<h2 id="framework-guidelines"><a class="header" href="#framework-guidelines">Framework Guidelines</a></h2>
+<ul>
+<li><a href="./framework/overview.html">Overview</a></li>
+<li><a href="./framework/principles.html">Core Principles</a></li>
+<li><a href="./framework/structure.html">Group Structure</a></li>
+</ul>
+<h2 id="running-groups"><a class="header" href="#running-groups">Running Groups</a></h2>
+<ul>
+<li><a href="./running-groups/meeting-formats.html">Meeting Formats</a></li>
+</ul>
+<h2 id="community-resources"><a class="header" href="#community-resources">Community Resources</a></h2>
+<ul>
+<li><a href="./community/communication.html">Communication Channels</a></li>
+<li><a href="./community/sponsorship.html">Sponsorship</a></li>
+<li><a href="./community/tools.html">Tools and Templates</a></li>
+</ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<ul>
+<li><a href="./contributing/how-to.html">How to Contribute</a></li>
+<li><a href="./contributing/style-guide.html">Documentation Style Guide</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="what-is-distributed-chaos"><a class="header" href="#what-is-distributed-chaos">What is Distributed Chaos?</a></h1>
+<p>Distributed Chaos (DC) is a grassroots movement focused on creating and nurturing local hacker communities without bureaucratic overhead. We believe in the power of decentralized, self-organizing groups that foster innovation, learning, and collaboration in technology.</p>
+<h2 id="core-principles"><a class="header" href="#core-principles">Core Principles</a></h2>
+<ol>
+<li>
+<p><strong>Decentralization</strong>: There is no central authority. Each group operates independently while sharing knowledge and resources with the broader community.</p>
+</li>
+<li>
+<p><strong>Open Access</strong>: Knowledge should be freely shared. We encourage documentation, open-source projects, and transparent communication.</p>
+</li>
+<li>
+<p><strong>DIY Ethics</strong>: Embrace the hacker spirit of learning by doing, experimenting, and building.</p>
+</li>
+<li>
+<p><strong>Inclusive Communities</strong>: Welcome all skill levels and backgrounds. Focus on mentorship and knowledge exchange.</p>
+</li>
+<li>
+<p><strong>Minimal Structure</strong>: Keep organizational overhead low. Focus on doing rather than planning.</p>
+</li>
+</ol>
+<h2 id="what-were-not"><a class="header" href="#what-were-not">What We're Not</a></h2>
+<ul>
+<li>We're not a formal organization or corporation</li>
+<li>We don't enforce strict rules or hierarchies</li>
+<li>We're not exclusive or elitist</li>
+</ul>
+<h2 id="what-we-do"><a class="header" href="#what-we-do">What We Do</a></h2>
+<ul>
+<li>Organize hackathons and project workshops</li>
+<li>Share knowledge through tech talks and tutorials</li>
+<li>Collaborate on open-source projects</li>
+<li>Provide resources for starting and maintaining local groups</li>
+<li>Connect different hacker communities worldwide</li>
+</ul>
+<h2 id="getting-started-1"><a class="header" href="#getting-started-1">Getting Started</a></h2>
+<p>Ready to join or start a local Distributed Chaos group? Check out our <a href="getting-started/starting-a-group.html">Starting a Group</a> guide or find an <a href="getting-started/../community/find-groups.html">existing community</a> near you.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="starting-a-group"><a class="header" href="#starting-a-group">Starting a Group</a></h1>
+<p>This guide will help you get started with practical steps and best practices.</p>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>Passion for technology and community building</li>
+<li>Basic organizational skills</li>
+<li>A way to communicate with potential members</li>
+<li>Optional: A meeting space (physical or virtual)</li>
+</ul>
+<h2 id="step-by-step-guide"><a class="header" href="#step-by-step-guide">Step-by-Step Guide</a></h2>
+<h3 id="1-define-your-focus"><a class="header" href="#1-define-your-focus">1. Define Your Focus</a></h3>
+<h3 id="2-find-your-first-members"><a class="header" href="#2-find-your-first-members">2. Find Your First Members</a></h3>
+<h3 id="3-set-up-communication-channels"><a class="header" href="#3-set-up-communication-channels">3. Set Up Communication Channels</a></h3>
+<p>Suggested platforms:</p>
+<ul>
+<li>Matrix/Element for chat</li>
+<li>Signal for smaller groups</li>
+<li>Mastodon for public announcements</li>
+</ul>
+<h3 id="4-plan-your-first-meeting"><a class="header" href="#4-plan-your-first-meeting">4. Plan Your First Meeting</a></h3>
+<h3 id="5-establish-basic-guidelines"><a class="header" href="#5-establish-basic-guidelines">5. Establish Basic Guidelines</a></h3>
+<p>While staying true to the minimal-structure philosophy, consider:</p>
+<ul>
+<li>Code of Conduct </li>
+<li>Meeting frequency and format</li>
+<li>Project collaboration methods</li>
+<li>Knowledge sharing approaches</li>
+</ul>
+<h2 id="running-successful-meetings"><a class="header" href="#running-successful-meetings">Running Successful Meetings</a></h2>
+<h2 id="growing-your-community"><a class="header" href="#growing-your-community">Growing Your Community</a></h2>
+<ul>
+<li>Document your activities</li>
+<li>Share success stories</li>
+<li>Welcome newcomers</li>
+<li>Connect with other DC groups</li>
+<li>Maintain a project showcase</li>
+<li>Host events (hackathons, workshops)</li>
+</ul>
+<h2 id="common-challenges-and-solutions"><a class="header" href="#common-challenges-and-solutions">Common Challenges and Solutions</a></h2>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<ul>
+<li><a href="getting-started/../community/guidelines.html">Community Guidelines</a></li>
+<li><a href="getting-started/../framework/project-ideas.html">Project Ideas</a></li>
+<li><a href="getting-started/../running-groups/meeting-templates.html">Meeting Templates</a></li>
+<li><a href="getting-started/../framework/tools.html">Tool Recommendations</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="framework-overview"><a class="header" href="#framework-overview">Framework Overview</a></h1>
+<p>The Distributed Chaos framework provides guidelines and best practices for running local security groups while maintaining autonomy and independence.</p>
+<p>Our goal is to provide a few simple organizing principles rather than to dictate how groups should operate. If your group agrees with our core principles, you're part of our hacker family. Beyond the core principles, we trust that you know best what will or won't work for your local hacker community.</p>
+<h2 id="be-good"><a class="header" href="#be-good">Be Good</a></h2>
+<p><a href="https://bsides.org">Security BSides</a> put forward a core ethos that we feel is worth following: &quot;<strong>Be good to, and for, the community.</strong>&quot;</p>
+<h2 id="be-active"><a class="header" href="#be-active">Be Active</a></h2>
+<p>A meetup group that never meets isn't much of a meetup group. Whether online or in meatspace, DCGs should meet at least quarterly.</p>
+<h2 id="be-open"><a class="header" href="#be-open">Be Open</a></h2>
+<p>Meetings should be open to the all. Diverse perspectives, experiences, and skills contribute to a richer and more innovative community.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-principles-1"><a class="header" href="#core-principles-1">Core Principles</a></h1>
+<p>The Distributed Chaos framework is built on fundamental principles that guide our approach to building and nurturing hacker communities. These principles reflect our values and shape how we operate.</p>
+<h2 id="1-decentralization"><a class="header" href="#1-decentralization">1. Decentralization</a></h2>
+<h3 id="key-aspects"><a class="header" href="#key-aspects">Key Aspects</a></h3>
+<ul>
+<li>No central authority</li>
+<li>Autonomous local groups</li>
+<li>Organic growth</li>
+<li>Resilient networks</li>
+</ul>
+<h3 id="implementation"><a class="header" href="#implementation">Implementation</a></h3>
+<ul>
+<li>Independent local leadership</li>
+<li>Peer-to-peer knowledge sharing</li>
+<li>Local resource management</li>
+<li>Community-driven initiatives</li>
+<li>Inter-group collaboration</li>
+</ul>
+<h2 id="2-open-knowledge"><a class="header" href="#2-open-knowledge">2. Open Knowledge</a></h2>
+<h3 id="key-aspects-1"><a class="header" href="#key-aspects-1">Key Aspects</a></h3>
+<ul>
+<li>Free information sharing</li>
+<li>Open source preference</li>
+<li>Transparent processes</li>
+<li>Accessible learning</li>
+</ul>
+<h3 id="implementation-1"><a class="header" href="#implementation-1">Implementation</a></h3>
+<ul>
+<li>Public documentation</li>
+<li>Shared resources</li>
+<li>Open workshops</li>
+<li>Knowledge repositories</li>
+<li>Skill sharing sessions</li>
+</ul>
+<h2 id="3-privacy-respect"><a class="header" href="#3-privacy-respect">3. Privacy Respect</a></h2>
+<h3 id="key-aspects-2"><a class="header" href="#key-aspects-2">Key Aspects</a></h3>
+<ul>
+<li>Data minimization</li>
+<li>Individual privacy</li>
+<li>Informed consent</li>
+<li>Transparent policies</li>
+</ul>
+<h3 id="implementation-2"><a class="header" href="#implementation-2">Implementation</a></h3>
+<ul>
+<li>Privacy-first tools</li>
+<li>Secure communications</li>
+<li>Clear guidelines</li>
+<li>Opt-in vs Opt-out participation</li>
+</ul>
+<h2 id="4-community-resilience"><a class="header" href="#4-community-resilience">4. Community Resilience</a></h2>
+<h3 id="key-aspects-3"><a class="header" href="#key-aspects-3">Key Aspects</a></h3>
+<ul>
+<li>Sustainable practices</li>
+<li>Resource sharing</li>
+<li>Skill redundancy</li>
+<li>Knowledge preservation</li>
+<li>Adaptive planning</li>
+</ul>
+<h3 id="implementation-3"><a class="header" href="#implementation-3">Implementation</a></h3>
+<ul>
+<li>Documentation systems</li>
+<li>Resource pools</li>
+<li>Cross-training</li>
+<li>Backup plans</li>
+<li>Community support</li>
+</ul>
+<h2 id="remember"><a class="header" href="#remember">Remember</a></h2>
+<ul>
+<li>Principles should guide, not restrict</li>
+<li>Local adaptation is key</li>
+<li>Community needs first</li>
+<li>Regular evaluation</li>
+<li>Continuous improvement</li>
+</ul>
+<p>These principles are living guidelines - they should evolve with your community while maintaining the core spirit of Distributed Chaos.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="group-structure"><a class="header" href="#group-structure">Group Structure</a></h1>
+<p>This guide outlines the recommended organizational structure for Distributed Chaos groups while maintaining our principles of minimal hierarchy and maximum flexibility.</p>
+<h2 id="basic-structure"><a class="header" href="#basic-structure">Basic Structure</a></h2>
+<h3 id="core-team"><a class="header" href="#core-team">Core Team</a></h3>
+<ul>
+<li>Shared decision-making</li>
+<li>Focus on facilitation</li>
+<li>Minimal bureaucracy</li>
+</ul>
+<h3 id="roles"><a class="header" href="#roles">Roles</a></h3>
+<ol>
+<li>
+<p><strong>Community Facilitator</strong></p>
+<ul>
+<li>Event coordination</li>
+<li>Communication flow</li>
+<li>Conflict resolution</li>
+<li>Community wellbeing</li>
+</ul>
+</li>
+<li>
+<p><strong>Resource Coordinator</strong></p>
+<ul>
+<li>Space management</li>
+<li>Tool maintenance</li>
+<li>Resource sharing</li>
+<li>Inventory tracking</li>
+</ul>
+</li>
+</ol>
+<h2 id="organizational-patterns"><a class="header" href="#organizational-patterns">Organizational Patterns</a></h2>
+<h3 id="small-groups-5-15-members"><a class="header" href="#small-groups-5-15-members">Small Groups (5-15 members)</a></h3>
+<ul>
+<li>Informal structure</li>
+<li>Direct communication</li>
+<li>Shared responsibilities</li>
+<li>Project-based organization</li>
+<li>Regular meetups</li>
+</ul>
+<h3 id="medium-groups-15-50-members"><a class="header" href="#medium-groups-15-50-members">Medium Groups (15-50 members)</a></h3>
+<ul>
+<li>Basic role distribution</li>
+<li>Working groups</li>
+<li>Project teams</li>
+<li>Communication channels</li>
+<li>Regular events</li>
+</ul>
+<h3 id="large-groups-50-members"><a class="header" href="#large-groups-50-members">Large Groups (50+ members)</a></h3>
+<ul>
+<li>Multiple working groups</li>
+<li>Specialized teams</li>
+<li>Documented processes</li>
+<li>Clear communication paths</li>
+<li>Regular coordination</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="meeting-formats"><a class="header" href="#meeting-formats">Meeting Formats</a></h1>
+<p>This guide outlines various meeting formats for Distributed Chaos groups and provides detailed guidance on running effective meetings.</p>
+<h2 id="core-meeting-types"><a class="header" href="#core-meeting-types">Core Meeting Types</a></h2>
+<h3 id="1-lightning-talks"><a class="header" href="#1-lightning-talks">1. Lightning Talks</a></h3>
+<ul>
+<li><strong>Duration</strong>: 5-10 minutes per talk</li>
+<li><strong>Format</strong>: Multiple short presentations</li>
+<li><strong>Total Time</strong>: 1-2 hours</li>
+</ul>
+<h4 id="structure"><a class="header" href="#structure">Structure</a></h4>
+<ol>
+<li>Introduction (5 min)</li>
+<li>4-6 lightning talks</li>
+<li>Q&amp;A after each talk</li>
+<li>Wrap-up discussion</li>
+</ol>
+<h4 id="tips"><a class="header" href="#tips">Tips</a></h4>
+<ul>
+<li>Keep strict time limits</li>
+<li>Use timer displays</li>
+<li>Encourage diverse topics</li>
+<li>Record for documentation</li>
+<li>Prepare backup talks</li>
+</ul>
+<h3 id="2-workshop-sessions"><a class="header" href="#2-workshop-sessions">2. Workshop Sessions</a></h3>
+<ul>
+<li><strong>Duration</strong>: 2-3 hours</li>
+<li><strong>Format</strong>: Hands-on learning</li>
+<li><strong>Participants</strong>: 5-20</li>
+</ul>
+<h4 id="structure-1"><a class="header" href="#structure-1">Structure</a></h4>
+<ol>
+<li>Setup (15 min)</li>
+<li>Introduction (15 min)</li>
+<li>Guided practice (1-1.5 hours)</li>
+<li>Independent work (30 min)</li>
+<li>Show and tell (15 min)</li>
+</ol>
+<h4 id="tips-1"><a class="header" href="#tips-1">Tips</a></h4>
+<ul>
+<li>Test all prerequisites</li>
+<li>Provide written guides</li>
+<li>Have backup materials</li>
+<li>Plan for different skill levels</li>
+<li>Document common issues</li>
+</ul>
+<h3 id="3--hack-on-stuff-nights"><a class="header" href="#3--hack-on-stuff-nights">3.  Hack on stuff Nights</a></h3>
+<ul>
+<li><strong>Duration</strong>: 3-4 hours</li>
+<li><strong>Format</strong>: Open project work</li>
+<li><strong>Style</strong>: Casual and collaborative</li>
+</ul>
+<h4 id="structure-2"><a class="header" href="#structure-2">Structure</a></h4>
+<ol>
+<li>Project pitches (15 min)</li>
+<li>Team formation (15 min)</li>
+<li>Work time (2-3 hours)</li>
+<li>Progress sharing (30 min)</li>
+<li>Next steps planning</li>
+</ol>
+<h4 id="tips-2"><a class="header" href="#tips-2">Tips</a></h4>
+<ul>
+<li>Provide basic tools</li>
+<li>Encourage collaboration</li>
+<li>Document progress</li>
+<li>Share resources</li>
+<li>Plan follow-ups</li>
+</ul>
+<h3 id="4-ctf-capture-the-flag"><a class="header" href="#4-ctf-capture-the-flag">4. CTF (Capture The Flag)</a></h3>
+<ul>
+<li><strong>Duration</strong>: 4-8 hours</li>
+<li><strong>Format</strong>: Security challenges</li>
+<li><strong>Style</strong>: Competitive learning</li>
+</ul>
+<h4 id="structure-3"><a class="header" href="#structure-3">Structure</a></h4>
+<ol>
+<li>Challenge introduction</li>
+<li>Team formation</li>
+<li>Competition period</li>
+<li>Solution sharing</li>
+<li>Learning review</li>
+</ol>
+<h4 id="tips-3"><a class="header" href="#tips-3">Tips</a></h4>
+<ul>
+<li>Vary difficulty levels</li>
+<li>Provide hints system</li>
+<li>Document solutions</li>
+<li>Encourage teaching</li>
+<li>Plan practice rounds</li>
+</ul>
+<h3 id="5-social-meetups"><a class="header" href="#5-social-meetups">5. Social Meetups</a></h3>
+<ul>
+<li><strong>Duration</strong>: 1-2 hours</li>
+<li><strong>Format</strong>: Casual networking</li>
+<li><strong>Style</strong>: Relaxed and inclusive</li>
+</ul>
+<h4 id="tips-4"><a class="header" href="#tips-4">Tips</a></h4>
+<ul>
+<li>Choose quiet venues</li>
+<li>Plan ice breakers</li>
+<li>Include newcomers</li>
+<li>Share community news</li>
+<li>Gather feedback</li>
+</ul>
+<h2 id="venue-considerations"><a class="header" href="#venue-considerations">Venue Considerations</a></h2>
+<h3 id="physical-space-requirements"><a class="header" href="#physical-space-requirements">Physical Space Requirements</a></h3>
+<ol>
+<li>
+<p><strong>Essential Features</strong></p>
+<ul>
+<li>Adequate seating</li>
+<li>Power outlets</li>
+<li>Internet access</li>
+<li>Presentation space</li>
+<li>Breakout areas</li>
+<li>Physical accessability </li>
+</ul>
+</li>
+<li>
+<p><strong>Amenities</strong></p>
+<ul>
+<li>Restroom access</li>
+<li>Water/Booze</li>
+<li>Climate control</li>
+<li>Storage space</li>
+</ul>
+</li>
+</ol>
+<h2 id="meeting-facilitation"><a class="header" href="#meeting-facilitation">Meeting Facilitation</a></h2>
+<h3 id="before-the-meeting"><a class="header" href="#before-the-meeting">Before the Meeting</a></h3>
+<ol>
+<li>
+<p><strong>Preparation</strong></p>
+<ul>
+<li>Confirm venue/platform</li>
+<li>Test equipment</li>
+<li>Prepare materials</li>
+<li>Send reminders</li>
+</ul>
+</li>
+<li>
+<p><strong>Setup</strong></p>
+<ul>
+<li>Arrive early</li>
+<li>Test systems</li>
+<li>Prepare space</li>
+</ul>
+</li>
+</ol>
+<h3 id="during-the-meeting"><a class="header" href="#during-the-meeting">During the Meeting</a></h3>
+<ol>
+<li>
+<p><strong>Management</strong></p>
+<ul>
+<li>Time keeping</li>
+<li>Flow control</li>
+<li>Engagement</li>
+<li>Documentation</li>
+</ul>
+</li>
+<li>
+<p><strong>Engagement</strong></p>
+<ul>
+<li>Include everyone</li>
+<li>Monitor energy</li>
+<li>Adjust pace</li>
+<li>Handle questions</li>
+<li>Support active learning</li>
+</ul>
+</li>
+</ol>
+<h3 id="after-the-meeting"><a class="header" href="#after-the-meeting">After the Meeting</a></h3>
+<ol>
+<li>
+<p><strong>Wrap-up</strong></p>
+<ul>
+<li>Summarize key points</li>
+<li>Plan next steps</li>
+<li>Gather feedback</li>
+<li>Clean up</li>
+<li>Document</li>
+</ul>
+</li>
+<li>
+<p><strong>Follow-up</strong></p>
+<ul>
+<li>Share resources</li>
+<li>Send summary</li>
+<li>Update docs</li>
+<li>Plan improvements</li>
+<li>Thank participants</li>
+</ul>
+</li>
+</ol>
+<h2 id="special-considerations"><a class="header" href="#special-considerations">Special Considerations</a></h2>
+<h3 id="accessibility"><a class="header" href="#accessibility">Accessibility</a></h3>
+<ol>
+<li>
+<p><strong>Physical</strong></p>
+<ul>
+<li>Venue access</li>
+<li>Seating options</li>
+<li>Clear signage</li>
+<li>Rest areas</li>
+<li>Support needs</li>
+</ul>
+</li>
+<li>
+<p><strong>Virtual</strong></p>
+<ul>
+<li>Platform access</li>
+<li>Caption support</li>
+<li>Recording options</li>
+<li>Alternative formats</li>
+<li>Technical help</li>
+</ul>
+</li>
+</ol>
+<h3 id="hybrid-meetings"><a class="header" href="#hybrid-meetings">Hybrid Meetings</a></h3>
+<ol>
+<li>
+<p><strong>Setup</strong></p>
+<ul>
+<li>Dual audio systems</li>
+<li>Multiple cameras</li>
+<li>Chat monitoring</li>
+<li>Engagement tools</li>
+<li>Technical support</li>
+</ul>
+</li>
+<li>
+<p><strong>Facilitation</strong></p>
+<ul>
+<li>Balance attention</li>
+<li>Include everyone</li>
+<li>Manage interactions</li>
+<li>Technical backup</li>
+<li>Document sharing</li>
+</ul>
+</li>
+</ol>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
+<h3 id="meeting-records"><a class="header" href="#meeting-records">Meeting Records</a></h3>
+<ol>
+<li>
+<p><strong>Content</strong></p>
+<ul>
+<li>Attendance</li>
+<li>Key discussions</li>
+<li>Decisions</li>
+<li>Action items</li>
+<li>Resources shared</li>
+</ul>
+</li>
+<li>
+<p><strong>Format</strong></p>
+<ul>
+<li>Written notes</li>
+<li>Photos/videos</li>
+<li>Presentations</li>
+<li>Code/projects</li>
+<li>Follow-up tasks</li>
+</ul>
+</li>
+</ol>
+<h3 id="knowledge-management"><a class="header" href="#knowledge-management">Knowledge Management</a></h3>
+<ol>
+<li>
+<p><strong>Organization</strong></p>
+<ul>
+<li>Clear structure</li>
+<li>Easy access</li>
+<li>Regular updates</li>
+<li>Version control</li>
+<li>Backup systems</li>
+</ul>
+</li>
+<li>
+<p><strong>Sharing</strong></p>
+<ul>
+<li>Public access</li>
+<li>Permission levels</li>
+<li>Update process</li>
+<li>Archive system</li>
+<li>Search capability</li>
+</ul>
+</li>
+</ol>
+<h2 id="remember-1"><a class="header" href="#remember-1">Remember</a></h2>
+<h3 id="meeting-formats-1"><a class="header" href="#meeting-formats-1">Meeting Formats</a></h3>
+<p>These formats should be adapted to your group's needs while maintaining the core principles of Distributed Chaos.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="communication-channels"><a class="header" href="#communication-channels">Communication Channels</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sponsorship"><a class="header" href="#sponsorship">Sponsorship</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="community-tools"><a class="header" href="#community-tools">Community Tools</a></h1>
+<p>This guide provides recommendations for tools and platforms that can help your Distributed Chaos group thrive while maintaining privacy, accessibility, and openness.</p>
+<h2 id="communication-platforms"><a class="header" href="#communication-platforms">Communication Platforms</a></h2>
+<h3 id="real-time-chat"><a class="header" href="#real-time-chat">Real-time Chat</a></h3>
+<ol>
+<li>
+<p><strong>Matrix/Element</strong></p>
+<ul>
+<li>Decentralized and open-source</li>
+<li>End-to-end encryption</li>
+<li>Cross-platform support</li>
+<li>Federation capabilities</li>
+<li>Self-hosting option</li>
+</ul>
+</li>
+<li>
+<p><strong>Signal</strong></p>
+<ul>
+<li>Strong encryption</li>
+<li>Perfect for smaller groups</li>
+<li>Simple to use</li>
+<li>Mobile-first approach</li>
+</ul>
+</li>
+<li>
+<p><strong>Discord</strong></p>
+<ul>
+<li>Popular among tech communities</li>
+<li>Rich feature set</li>
+<li>Good for larger communities</li>
+<li>Voice and video capabilities</li>
+<li>Note: Consider privacy implications</li>
+</ul>
+</li>
+</ol>
+<h3 id="asynchronous-communication"><a class="header" href="#asynchronous-communication">Asynchronous Communication</a></h3>
+<ol>
+<li>
+<p><strong>Mastodon</strong></p>
+<ul>
+<li>Decentralized microblogging</li>
+<li>Open-source</li>
+<li>Federation capabilities</li>
+<li>Good for public announcements</li>
+</ul>
+</li>
+<li>
+<p><strong>Forums</strong></p>
+<ul>
+<li>Discourse (recommended)</li>
+<li>Self-hosted options</li>
+<li>Searchable archives</li>
+<li>Structured discussions</li>
+</ul>
+</li>
+</ol>
+<h2 id="project-collaboration"><a class="header" href="#project-collaboration">Project Collaboration</a></h2>
+<h3 id="version-control"><a class="header" href="#version-control">Version Control</a></h3>
+<ol>
+<li><strong>Git Platforms</strong>
+<ul>
+<li>GitHub</li>
+<li>GitLab (self-hosted option)</li>
+<li>Codeberg (FOSS focus)</li>
+</ul>
+</li>
+</ol>
+<h3 id="project-management"><a class="header" href="#project-management">Project Management</a></h3>
+<ol>
+<li>
+<p><strong>Kanban Boards</strong></p>
+<ul>
+<li>Trello</li>
+<li>GitHub Projects</li>
+<li>GitLab Boards</li>
+</ul>
+</li>
+<li>
+<p><strong>Documentation</strong></p>
+<ul>
+<li>mdBook (what you're reading now!)</li>
+<li>Wiki.js</li>
+<li>GitBook</li>
+</ul>
+</li>
+</ol>
+<h2 id="event-organization"><a class="header" href="#event-organization">Event Organization</a></h2>
+<h3 id="meeting-planning"><a class="header" href="#meeting-planning">Meeting Planning</a></h3>
+<ol>
+<li>
+<p><strong>Calendar Tools</strong></p>
+<ul>
+<li>Nextcloud Calendar</li>
+<li>Google Calendar</li>
+<li>Mobilizon</li>
+</ul>
+</li>
+<li>
+<p><strong>RSVP Management</strong></p>
+<ul>
+<li>Meetup</li>
+<li>Mobilizon</li>
+<li>Simple forms (Cryptpad)</li>
+</ul>
+</li>
+</ol>
+<h3 id="virtual-meetings"><a class="header" href="#virtual-meetings">Virtual Meetings</a></h3>
+<ol>
+<li>
+<p><strong>Video Conferencing</strong></p>
+<ul>
+<li>Jitsi Meet (recommended)</li>
+<li>BigBlueButton</li>
+<li>Zoom (when necessary)</li>
+</ul>
+</li>
+<li>
+<p><strong>Streaming</strong></p>
+<ul>
+<li>OBS Studio</li>
+<li>PeerTube</li>
+<li>Owncast</li>
+</ul>
+</li>
+</ol>
+<h2 id="collaboration-tools"><a class="header" href="#collaboration-tools">Collaboration Tools</a></h2>
+<h3 id="real-time-collaboration"><a class="header" href="#real-time-collaboration">Real-time Collaboration</a></h3>
+<ol>
+<li>
+<p><strong>Code</strong></p>
+<ul>
+<li>VS Code Live Share</li>
+<li>JupyterHub</li>
+<li>Replit</li>
+</ul>
+</li>
+<li>
+<p><strong>Documents</strong></p>
+<ul>
+<li>Cryptpad</li>
+<li>HedgeDoc</li>
+<li>Etherpad</li>
+</ul>
+</li>
+</ol>
+<h3 id="file-sharing"><a class="header" href="#file-sharing">File Sharing</a></h3>
+<ol>
+<li>
+<p><strong>Large Files</strong></p>
+<ul>
+<li>IPFS</li>
+<li>Nextcloud</li>
+<li>Magic Wormhole</li>
+</ul>
+</li>
+<li>
+<p><strong>Code Snippets</strong></p>
+<ul>
+<li>GitHub Gists</li>
+<li>PrivateBin</li>
+<li>Paste.rs</li>
+</ul>
+</li>
+</ol>
+<h2 id="privacy-and-security"><a class="header" href="#privacy-and-security">Privacy and Security</a></h2>
+<h3 id="authentication"><a class="header" href="#authentication">Authentication</a></h3>
+<ol>
+<li>
+<p><strong>Password Management</strong></p>
+<ul>
+<li>Bitwarden</li>
+<li>KeePassXC</li>
+<li>Pass</li>
+</ul>
+</li>
+<li>
+<p><strong>2FA</strong></p>
+<ul>
+<li>Aegis</li>
+<li>AndOTP</li>
+<li>YubiKey</li>
+</ul>
+</li>
+</ol>
+<h3 id="encryption"><a class="header" href="#encryption">Encryption</a></h3>
+<ol>
+<li><strong>File Encryption</strong>
+<ul>
+<li>VeraCrypt</li>
+<li>age</li>
+<li>GPG</li>
+</ul>
+</li>
+</ol>
+<h2 id="setting-up-your-stack"><a class="header" href="#setting-up-your-stack">Setting Up Your Stack</a></h2>
+<ol>
+<li>Start small with essential tools</li>
+<li>Get community feedback</li>
+<li>Document your setup</li>
+<li>Provide onboarding guides</li>
+<li>Have backup options ready</li>
+</ol>
+<h2 id="hosting-considerations"><a class="header" href="#hosting-considerations">Hosting Considerations</a></h2>
+<h3 id="self-hosting"><a class="header" href="#self-hosting">Self-hosting</a></h3>
+<ul>
+<li>Pros: Control, privacy, customization</li>
+<li>Cons: Maintenance, cost, responsibility</li>
+<li>Recommended for: Larger, established groups</li>
+</ul>
+<h3 id="cloud-services"><a class="header" href="#cloud-services">Cloud Services</a></h3>
+<ul>
+<li>Pros: Easy setup, reliability</li>
+<li>Cons: Less control, potential costs</li>
+<li>Recommended for: New or smaller groups</li>
+</ul>
+<h2 id="tool-selection-criteria"><a class="header" href="#tool-selection-criteria">Tool Selection Criteria</a></h2>
+<p>When choosing tools, consider:</p>
+<ol>
+<li>Ease of use</li>
+<li>Privacy features</li>
+<li>Licensing</li>
+<li>Maintenance requirements</li>
+<li>Community support</li>
+<li>Integration capabilities</li>
+<li>Accessibility</li>
+<li>Data portability</li>
+</ol>
+<p>Remember: Tools should serve the community, not the other way around. Start with the minimum viable toolset and expand based on actual needs.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to Contribute</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="documentation-style-guide"><a class="header" href="#documentation-style-guide">Documentation Style Guide</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
